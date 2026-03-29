@@ -1,0 +1,182 @@
+# =============================================================
+# ProjectV — Configuration Structure (Sanitized Template)
+# =============================================================
+# This file shows the architectural structure of ProjectV's
+# configuration system. Actual parameter values are private.
+#
+# The config-driven architecture means every strategic decision
+# is explicitly documented and reproducible — no hardcoded
+# magic numbers in the codebase.
+# =============================================================
+
+# --------------------------
+# RUN
+# --------------------------
+run:
+  name: [strategy version identifier]
+
+# --------------------------
+# DATA
+# --------------------------
+data:
+  source: [price data provider]
+  start: [backtest start date]
+  end: [backtest end date]
+  interval: "1d"
+  price_field: [adjusted or unadjusted close]
+  cache_dir: [local cache path]
+
+# --------------------------
+# UNIVERSE
+# --------------------------
+# Alpha and hedge sleeves are strictly disjoint.
+# A hard assertion at startup raises ValueError if any
+# ticker appears in both — fixing a critical bug in
+# earlier versions where overlap caused uncontrolled
+# double-counting in portfolio construction.
+
+universe:
+  alpha:
+    # Broad US equity indices
+    # Sector ETFs
+    # Factor ETFs (momentum, low-vol, quality, value)
+    # Fixed income (credit only — rates live in hedge)
+    # Commodities
+    # [~20-25 tickers total]
+
+  hedge:
+    # Defensive ballast activated in risk-off regimes
+    # Duration, safe-haven, cash proxy
+    # [~5 tickers — strictly no overlap with alpha]
+
+# --------------------------
+# SIGNAL
+# --------------------------
+# Vol-normalized multi-horizon momentum with soft direction gate.
+# Soft gate replaced hard exclusion to expand eligible set
+# and allow ML layer meaningful selection decisions.
+
+signal:
+  kind: momentum
+  long_short: true
+  # Lookback horizons: [short confirm, medium trend, long trend]
+  # Horizon weights: regime-conditioned (6 sets)
+  # Direction gate: soft penalty on mildly negative trends,
+  #                 hard exclusion on strongly negative trends
+  # Timing modifier: short-term momentum consistency filter
+
+# --------------------------
+# REGIME CLASSIFIER
+# --------------------------
+# Six-state classification using risk-adjusted trend strength:
+#   trend_strength = ret_[horizon] / vol_[horizon]
+# Signed and normalized so a 5% return in calm markets
+# is treated differently from 5% in volatile markets.
+#
+# States:
+#   BULLISH_LOWVOL   — strong uptrend, low volatility
+#   BULLISH_HIGHVOL  — uptrend but elevated volatility
+#   BEARISH_LOWVOL   — downtrend, orderly
+#   BEARISH_HIGHVOL  — downtrend, crisis conditions
+#   SIDEWAYS_LOWVOL  — no trend, calm
+#   CHOPPY_HIGHVOL   — no trend, volatile (most defensive)
+#
+# Confirm days: hysteresis filter to prevent whipsaw on
+# regime transitions. Reduced from v1 to lower transition lag
+# while still filtering noise.
+
+regime:
+  equity: [reference equity instrument]
+  trend_lb: [trend lookback — private]
+  vol_short_lb: [vol lookback — private]
+  strength_threshold: [private]
+  vol_threshold: [private]
+  confirm_days: [private]
+
+  # Each regime has a dedicated parameter set:
+  presets:
+    BULLISH_LOWVOL:
+      gross_mult: [private]       # Overall exposure multiplier
+      hedge_mult: [private]       # Hedge sleeve sizing
+      ls_long_frac: [private]     # Long vs short leg fraction
+      rank_buffer: [private]      # Hysteresis for position changes
+      min_trade_weight: [private] # Min change to execute trade
+
+    BULLISH_HIGHVOL:
+      # [parameters — private]
+
+    BEARISH_LOWVOL:
+      # [parameters — private]
+
+    BEARISH_HIGHVOL:
+      # [parameters — private]
+
+    SIDEWAYS_LOWVOL:
+      # [parameters — private]
+
+    CHOPPY_HIGHVOL:
+      disable_shorts: true  # Mean reversion dominates in chop
+      # [other parameters — private]
+
+# --------------------------
+# BACKTEST
+# --------------------------
+backtest:
+  rebalance: [rebalance frequency]
+
+# --------------------------
+# PORTFOLIO CONSTRUCTION
+# --------------------------
+portfolio:
+  gross_target: [target gross exposure]
+  weighting:
+    n_long: [private]              # Assets in long leg
+    n_short: [private]             # Assets in short leg
+  constraints:
+    max_position_weight: [private] # Per-position cap
+
+# --------------------------
+# RISK MANAGEMENT
+# --------------------------
+# Three layered risk controls:
+#
+# 1. Volatility Targeting
+#    Scale gross exposure up/down based on realized vol
+#    vs target. Keeps portfolio risk roughly constant
+#    regardless of market conditions.
+#
+# 2. Drawdown De-risking
+#    Linear interpolation between soft and hard drawdown
+#    thresholds. Soft threshold begins scaling down.
+#    Hard threshold forces minimum exposure.
+#
+# 3. Regime-Conditioned Correlation Penalty
+#    Reduces gross exposure when alpha assets become
+#    highly correlated. Critically: penalty is OFF in
+#    risk-off regimes where correlation is structurally
+#    unavoidable — fixing a double-punishment bug in v1
+#    that over-reduced exposure in crisis periods.
+
+risk:
+  target_vol: [private]
+  vol_lookback: [private]
+  max_gross_scale: [private]
+  min_gross_scale: [private]
+  dd_threshold: [private]    # Soft drawdown threshold
+  dd_hard: [private]         # Hard drawdown threshold
+  corr_lookback: [private]
+  corr_threshold: [private]
+
+# --------------------------
+# EXECUTION
+# --------------------------
+# Transaction cost model: slippage + commission per side.
+# Min trade weight filter prevents noise trades —
+# renormalizes gross exposure after filtering to maintain
+# intended risk level (bug fixed vs ProjectV v1).
+
+execution:
+  slippage_bps: [private]
+  costs:
+    bps: [private]
+  min_trade_weight: [private]
