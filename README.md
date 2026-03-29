@@ -14,7 +14,7 @@ process that made ProjectR possible.
 
 
 
-**Status:** Deprecated | Succeeded by \[ProjectR](https://github.com/vnuthi07/ProjectR-overview)  
+**Status:** Deprecated | Succeeded by [ProjectR](https://github.com/vnuthi07/ProjectR-overview)  
 
 **Built:** 2024-2025 (\~2-3 months, 7 major versions)  
 
@@ -54,7 +54,7 @@ not be consistently replicated after further experimentation —
 
 the signal that led directly to ProjectR's disciplined 
 
-research infrastructure.\*
+research infrastructure.*
 
 
 
@@ -68,13 +68,13 @@ research infrastructure.\*
 
 ### Peak Version (0.85 Sharpe)
 
-!\[ProjectV Peak Equity Curve](assets/equity-curve-peak.png)
+![ProjectV Peak Equity Curve](assets/equity-curve-peak.png)
 
 
 
 ### Final Version (0.65 Sharpe)
 
-!\[ProjectV Final Equity Curve](assets/equity-curve-final.png)
+![ProjectV Final Equity Curve](assets/equity-curve-final.png)
 
 
 
