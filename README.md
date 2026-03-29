@@ -22,7 +22,7 @@ process that made ProjectR possible.
 
 
 
-\---
+---
 
 
 
@@ -48,17 +48,17 @@ process that made ProjectR possible.
 
 
 
-\*Peak metrics were achieved during development but could
+*Peak metrics were achieved during development but could
 
 not be consistently replicated after further experimentation —
 
 the signal that led directly to ProjectR's disciplined
 
-research infrastructure.\*
+research infrastructure.*
 
 
 
-\---
+---
 
 
 
@@ -68,27 +68,27 @@ research infrastructure.\*
 
 ### Peak Version (0.85 Sharpe)
 
-!\[ProjectV Peak Equity Curve](assets/equity-curve-peak.png)
+![ProjectV Peak Equity Curve](assets/equity-curve-peak.png)
 
 
 
 ### Final Version (0.65 Sharpe)
 
-!\[ProjectV Final Equity Curve](assets/equity-curve-final.png)
+![ProjectV Final Equity Curve](assets/equity-curve-final.png)
 
 
 
-\*The degradation between peak and final versions is visible
+*The degradation between peak and final versions is visible
 
 in the pre-2020 period — changes made during experimentation
 
 hurt early period performance while post-2020 behavior
 
-remained similar.\*
+remained similar.*
 
 
 
-\---
+---
 
 
 
@@ -131,7 +131,7 @@ risk through regime detection and volatility targeting.
 
 
 
-\---
+---
 
 
 
@@ -181,7 +181,7 @@ less reliable.
 
 
 
-\---
+---
 
 
 
@@ -189,7 +189,7 @@ less reliable.
 
 
 
-### 1\. Regime Classifier Was Never Wired In
+### 1. Regime Classifier Was Never Wired In
 
 The regime classifier existed as a separate module but
 
@@ -201,7 +201,7 @@ allocation logic was ignoring entirely.
 
 
 
-### 2\. Universe Overlap
+### 2. Universe Overlap
 
 TLT, IEF, SHY, GLD, SLV, UUP appeared in both alpha
 
@@ -213,7 +213,7 @@ adding up uncontrollably. No overlap validation existed.
 
 
 
-### 3\. Structural Asset Problem
+### 3. Structural Asset Problem
 
 VIXY was in the alpha universe despite massive negative
 
@@ -223,7 +223,7 @@ unsuitable as a momentum signal source.
 
 
 
-### 4\. Correlation Penalty Design Flaw
+### 4. Correlation Penalty Design Flaw
 
 A flat 0.40 gross scale multiplier applied whenever
 
@@ -237,7 +237,7 @@ already-defensive portfolio.
 
 
 
-### 5\. No Research Infrastructure
+### 5. No Research Infrastructure
 
 One in-sample backtest. Walk-forward and stress test
 
@@ -251,7 +251,7 @@ entirely on in-sample metrics.
 
 
 
-### 6\. Monolithic Architecture
+### 6. Monolithic Architecture
 
 \~1,000 line engine.py with backtest loop, regime
 
@@ -265,7 +265,7 @@ No unit tests.
 
 
 
-\---
+---
 
 
 
@@ -311,7 +311,7 @@ parameter sensitivity are the evidence that matters.
 
 
 
-\---
+---
 
 
 
@@ -349,13 +349,13 @@ ProjectR taught me how to build it correctly.
 
 
 
-→ \*\*[See ProjectR](https://github.com/vnuthi07/ProjectR-overview)
+→ **[See ProjectR](https://github.com/vnuthi07/ProjectR-overview)
 
-for the rebuilt system.\*\*
+for the rebuilt system.**
 
 
 
-\---
+---
 
 
 
@@ -369,11 +369,11 @@ peak and final versions.
 
 
 
-\---
+---
 
 
 
-\*Strategy code is private. This repository contains
+*Strategy code is private. This repository contains
 
-documentation, equity curves, and metrics only.\*
+documentation, equity curves, and metrics only.*
 
